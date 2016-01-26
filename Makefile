@@ -14,9 +14,9 @@ RELVERS = `pwd | sed "s-.*/--" | sed "s/vgabios//" | sed "s/-//"`
 
 VGABIOS_DATE = "-DVGABIOS_DATE=\"$(RELDATE)\""
 
-all: bios cirrus-bios
+all: bios # cirrus-bios
 
-bios: vgabios.bin vgabios.debug.bin
+bios: vgabios.bin # vgabios.debug.bin
 
 cirrus-bios: vgabios-cirrus.bin vgabios-cirrus.debug.bin
 
@@ -38,7 +38,7 @@ vgabios-cirrus.bin       : VGAFLAGS := -DCIRRUS -DPCIBIOS
 vgabios-cirrus.debug.bin : VGAFLAGS := -DCIRRUS -DPCIBIOS -DCIRRUS_DEBUG
 
 # dist names
-vgabios.bin              : DISTNAME := VGABIOS-lgpl-latest.bin
+vgabios.bin              : DISTNAME := vgabios
 vgabios.debug.bin        : DISTNAME := VGABIOS-lgpl-latest.debug.bin
 vgabios-cirrus.bin       : DISTNAME := VGABIOS-lgpl-latest.cirrus.bin
 vgabios-cirrus.debug.bin : DISTNAME := VGABIOS-lgpl-latest.cirrus.debug.bin
@@ -57,9 +57,10 @@ vgabios-cirrus.debug.bin : $(VGA_FILES) clext.c biossums
 	sed -e 's/^\.text//' -e 's/^\.data//' $*.s > _$*_.s
 	$(AS86) _$*_.s -b $*.bin -u -w- -g -0 -j -O -l $*.txt
 	rm -f _$*_.s _$*_.c $*.s
-	mv $*.bin $(DISTNAME)
-	./biossums $(DISTNAME)
-	ls -l $(DISTNAME)
+	mkdir -p ../sd/vgabios
+	mv $*.bin ../sd/vgabios/$(DISTNAME)
+	./biossums ../sd/vgabios/$(DISTNAME)
+	ls -l ../sd/vgabios/$(DISTNAME)
 
 release: 
 	VGABIOS_VERS=\"-DVGABIOS_VERS=\\\"$(RELVERS)\\\"\" make bios cirrus-bios
