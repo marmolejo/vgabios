@@ -31,7 +31,8 @@ VGA_FILES := vgabios.c vgabios.h vgafonts.h vgatables.h
 VBE_FILES := vbe.h vbe.c vbetables.h
 
 # build flags
-vgabios.bin              : VGAFLAGS := -DVBE -DPCIBIOS
+vgabios.bin              : VGAFLAGS :=
+#-DVBE -DPCIBIOS
 vgabios.debug.bin        : VGAFLAGS := -DVBE -DPCIBIOS -DDEBUG
 vgabios-cirrus.bin       : VGAFLAGS := -DCIRRUS -DPCIBIOS
 vgabios-cirrus.debug.bin : VGAFLAGS := -DCIRRUS -DPCIBIOS -DCIRRUS_DEBUG
@@ -43,7 +44,8 @@ vgabios-cirrus.bin       : DISTNAME := VGABIOS-lgpl-latest.cirrus.bin
 vgabios-cirrus.debug.bin : DISTNAME := VGABIOS-lgpl-latest.cirrus.debug.bin
 
 # dependencies
-vgabios.bin              : $(VGA_FILES) $(VBE_FILES) biossums
+vgabios.bin              : $(VGA_FILES) biossums
+#$(VGA_FILES) $(VBE_FILES) biossums
 vgabios.debug.bin        : $(VGA_FILES) $(VBE_FILES) biossums
 vgabios-cirrus.bin       : $(VGA_FILES) clext.c biossums
 vgabios-cirrus.debug.bin : $(VGA_FILES) clext.c biossums
